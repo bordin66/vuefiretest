@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<script src="http://connect.facebook.net/en_US/all.js"></script>
+		
+		<fb:login-button autologoutlink="true" onlogin="OnRequestPermission();">
+		</fb:login-button>
+		
+		<fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
+		</fb:login-button>
+		
+	<script language="javascript" type="text/javascript">
+		FB.init({
+			appId: '1903426476539943',
+			status: true, 
+			cookie: true, 
+			xfbml: true
+		});    
+	</script>
+		
+	<button name="my_full_name" onclick="ShowMyName()" value="My Name" > Text </button>
+	
+	
+	
+	<img src="src" alt="some_text" style="width:width;height:height;" id="profileImage">
+	<img src="src" alt="some_text" style="width:width;height:height;" id="profileCover">
+	<div id="content">
+
+	</div>
+	
+	<script language="javascript" type="text/javascript">
+	function ShowMyName() {
+			FB.api("/me",
+					function (response) {
+						
+						fbinfo = new Array();
+						fbinfo[0] = response.id;
+						fbinfo[1] = response.first_name;
+						fbinfo[2] = response.last_name;
+						fbinfo[3] = response.email;
+						alert('Name is ' + response.name + " ID " + fbinfo[0] + " first_name " + response.first_name + " last_name " + response.last_name + " email " + response.email  );
+						
+
+						var div = document.createElement('div');
+
+						div.className = 'row';
+
+						div.innerHTML = '<div align="center">ID = '+response.id+'</div>';
+						div.innerHTML += '<div align="center">first_name = '+response.name+'</div>';
+
+						 document.getElementById('content').appendChild(div);
+											
+						
+						FB.api('/me/picture?width=4000&height=4000', function (response) {
+							var im = document.getElementById("profileImage").setAttribute("src", response.data.url);
+							//alert(im);
+						});
+						
+						FB.api('/me?fields=cover&width=4000&height=4000', function (response) {
+						//alert("Test");
+						//alert(response.cover.source);
+						var im = document.getElementById("profileCover").setAttribute("src", response.cover.source);
+						});
+						
+					});
+					
+				alert('Test2');		
+				getFriends();		
+						
+					
+					
+
+     //var im = document.getElementById("profileImage").setAttribute("src", "http://graph.facebook.com/" + response.id + "/picture?type=normal");
+	}
+	
+	
+	 function getFriends() {
+	 
+		FB.api('/me/friends', function(response) {
+			if(response.data) {
+				$.each(response.data,function(index,friend) {
+					alert(friend.name + ' has id:' + friend.id);
+				});
+			} else {
+				alert("Error!");
+			}
+		});
+			 
+		}
+	
+	</script>
+			
+</body>
+</html>
