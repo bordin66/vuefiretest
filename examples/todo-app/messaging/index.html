@@ -94,11 +94,34 @@ limitations under the License.
 			
 			firebase.initializeApp(config);
 
+			
+			
   // [START get_messaging_object]
   // Retrieve Firebase Messaging object.
   const messaging = firebase.messaging();
   // [END get_messaging_object]
 
+			  // This registration token comes from the client FCM SDKs.
+			var registrationToken = "cYxdQRxXT2w:APA91bENrpp4n-DrLSwhhOXDwWK9Y33MFkZ9LlJgcKGdYSlO-chdTp9cycycLs0qdVtOVUxy6EGI1ok1aDUQNeQWaXJ1zh0_sw0S6-H8YZKHbZYgeCZvUuU6n76bve6zTtmz-gZm4nVW";
+
+		// Sending and receiving data in JSON format using POST mothod
+		//
+		var xhr = new XMLHttpRequest();
+		var url = "https://fcm.googleapis.com/fcm/send";
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json");
+		xhr.setRequestHeader("Authorization", "key=AIzaSyBeBj7FT0mfrkWX4v5F4U0Txlo9o2wx4Vk");
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var json = JSON.parse(xhr.responseText);
+				console.log(json.email + ", " + json.password);
+			}
+		};
+		var data = JSON.stringify({"to": "cYxdQRxXT2w:APA91bENrpp4n-DrLSwhhOXDwWK9Y33MFkZ9LlJgcKGdYSlO-chdTp9cycycLs0qdVtOVUxy6EGI1ok1aDUQNeQWaXJ1zh0_sw0S6-H8YZKHbZYgeCZvUuU6n76bve6zTtmz-gZm4nVW", "data":{"message":"r rai wa"}});
+		xhr.send(data);
+  
+		
+  
   // IDs of divs that display Instance ID token UI or request permission UI.
   const tokenDivId = 'token_div';
   const permissionDivId = 'permission_div';
