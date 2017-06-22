@@ -6,6 +6,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="../../dist/vuefire.js"></script>
+	
   </head>
   <body>
 
@@ -30,7 +31,7 @@
         @keyup.enter="addTodo"
         placeholder="Add new todo"
       >
-      <ul>
+      <ul id="ul2">
         <li v-for="todo in todos">
           <input
             :value="todo.text"
@@ -42,9 +43,16 @@
     </div>
 
     <script>
+	
+		new Vue({
+		  el: '#ul2',
+		  data: {
+			show: false
+		  }
+		})
       /* global Vue, firebase */
       var db = firebase.initializeApp({
-        databaseURL: 'https://vuefirebase-b95da.firebaseio.com/'
+        databaseURL: 'https://fbte-607bb.firebaseio.com/'
       }).database()
       var todosRef = db.ref('todos')
 
@@ -73,16 +81,6 @@
           }
         }
       })
-	  
-	  var body = 'Reading JS SDK documentation';
-		FB.api('/me/feed', 'post', { message: body }, function(response) {
-		  if (!response || response.error) {
-			alert('Error occured');
-		  } else {
-			alert('Post ID: ' + response.id);
-		  }
-		});
-	  
     </script>
   </body>
 </html>

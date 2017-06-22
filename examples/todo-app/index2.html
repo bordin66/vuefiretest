@@ -5,6 +5,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title></title>
 	<link rel="stylesheet" href="">
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-messaging.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="../../dist/vuefire.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
 	<script src="http://connect.facebook.net/en_US/all.js"></script>
 		
 		<fb:login-button autologoutlink="true" onlogin="OnRequestPermission();">
@@ -32,8 +41,23 @@
 
 	</div>
 	
+	
+	
+	
 	<script language="javascript" type="text/javascript">
+	
+	  
+	//////////API Facebook
 	function ShowMyName() {
+			var messagesRef = new Firebase('https://kept-ef59d.firebaseio.com/');	
+			 var config = {
+                 apiKey: 'AIzaSyB60Hc7GEGgilbDATju6uxqWliRQUe711c',
+                 authDomain: 'localhost',
+                 databaseURL: 'https://kept-ef59d.firebaseio.com/',
+                 storageBucket: 'gs://kept-ef59d.appspot.com/'
+                };
+			
+			firebase.initializeApp(config);
 			FB.api("/me",
 					function (response) {
 						
@@ -66,16 +90,40 @@
 						var im = document.getElementById("profileCover").setAttribute("src", response.cover.source);
 						});
 						
-					});
-					
-				alert('Test2');		
-				getFriends();		
 						
+						
+						
+					});
+				
+				FB.api('/me/posts?fields=full_picture,description,source', function (response) {
+						for ( i = 0; i < response.data.length; i++ ) {
+										// process this row		
+										var id = (response.data[i].id ? response.data[i].id : '');
+										var full_picture = (response.data[i].full_picture ? response.data[i].full_picture : '');
+										var description = (response.data[i].description ? response.data[i].description : '');
+										var source = (response.data[i].source ? response.data[i].source : '');
+										messagesRef.push({postID:id, picture:full_picture,description:description,source:source});
+										//gs://kept-ef59d.appspot.com/
+										if(full_picture&&full_picture!=''){
+										var storageRef = firebase.storage().ref();
+										var storageRef = firebase.storage().ref("123.jpg");
+										storageRef.put(full_picture);
+										}
+											
+										
+							  }
+						 
+						//alert('Test2');	
+						});
+				
 					
+				//getFriends();		
+						
 					
 
      //var im = document.getElementById("profileImage").setAttribute("src", "http://graph.facebook.com/" + response.id + "/picture?type=normal");
 	}
+	
 	
 	
 	 function getFriends() {
